@@ -1,0 +1,48 @@
+<!-- 既存のタスク一覧テーブルのアクション列に追加 -->
+<td class="px-6 py-4">
+    <button @click="viewResults(task.id)" 
+            class="text-blue-600 hover:text-blue-900 mr-2">
+        結果を表示
+    </button>
+    <button @click="generateDocument(task.id)" 
+            class="text-green-600 hover:text-green-900">
+        PDF出力
+    </button>
+</td>
+
+<!-- Vueアプリケーションのmethodsに追加 -->
+<script>
+    // 既存のVueアプリケーションのmethodsに追加
+    methods: {
+        // ... 既存のメソッド ...
+
+        async generateDocument(taskId) {
+            try {
+                const response = await fetch(`/documents/generate?task_id=${taskId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+
+                if (response.ok) {
+                    // PDFのダウンロード
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = response.headers.get('content-disposition').split('filename=')[1];
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    a.remove();
+                } else {
+                    throw new Error('PDF generation failed');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('PDFの生成に失敗しました。');
+            }
+        }
+    }
+</script>

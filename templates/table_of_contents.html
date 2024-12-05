@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <div class="table-of-contents">
+        <h2>目次</h2>
+        <nav>
+            <ul>
+                {% for section in sections %}
+                <li>
+                    <a href="#{{ section.id }}">{{ section.title }}</a>
+                    {% if section.subsections %}
+                    <ul>
+                        {% for subsection in section.subsections %}
+                        <li>
+                            <a href="#{{ section.id }}_{{ subsection.id }}">{{ subsection.title }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </nav>
+    </div>
+</body>
+</html>

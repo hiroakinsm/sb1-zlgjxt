@@ -1,0 +1,7 @@
+flowchart TB
+    {% for node in diagram_data.nodes %}
+    {{ node.id }}[{{ node.label }}]
+    {% endfor %}
+    {% for edge in diagram_data.edges %}
+    {{ edge.from }} --> {{ edge.to }}
+    {% endfor %}

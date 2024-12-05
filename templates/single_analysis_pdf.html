@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>COBOLソース解析レポート</title>
+    <style>
+        @page {
+            @top-center {
+                content: "COBOLソース解析レポート";
+            }
+            @bottom-center {
+                content: "Page " counter(page) " of " counter(pages);
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>COBOLソース解析レポート</h1>
+    
+    <!-- ファイル情報 -->
+    <div class="file-info">
+        <p>ファイル名: {{ file_info.file_name }}</p>
+        <p>解析日時: {{ generation_time }}</p>
+    </div>
+
+    <!-- 目次 -->
+    {% if controls.include_table_of_contents == 'true' %}
+    <div class="table-of-contents">
+        {{ table_of_contents|safe }}
+    </div>
+    {% endif %}
+
+    <!-- 各セクションの内容 -->
+    {% for section in sections %}
+    <section id="{{ section.id }}">
+        <h2>{{ section.title }}</h2>
+        
+        {% for subsection in section.subsections %}
+        <section id="{{ section.id }}_{{ subsection.id }}">
+            <h3>{{ subsection.title }}</h3>
+            {{ analysis_results[section.id][subsection.id]|safe }}
+        </section>
+        {% endfor %}
+    </section>
+    {% endfor %}
+</body>
+</html>

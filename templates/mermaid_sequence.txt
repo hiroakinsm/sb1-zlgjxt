@@ -1,0 +1,7 @@
+sequenceDiagram
+    {% for participant in diagram_data.participants %}
+    participant {{ participant }}
+    {% endfor %}
+    {% for message in diagram_data.messages %}
+    {{ message.from }} ->> {{ message.to }}: {{ message.text }}
+    {% endfor %}
